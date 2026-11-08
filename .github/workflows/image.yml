@@ -17,6 +17,8 @@ jobs:
   image:
     runs-on: ubuntu-24.04
     timeout-minutes: 35
+    outputs:
+      reference: ${{ steps.identity.outputs.image }}@${{ steps.publish.outputs.digest }}
     permissions:
       contents: read
       packages: write
@@ -88,3 +90,23 @@ jobs:
         with:
           name: image-reference
           path: image-reference.txt
+
+  anonymous-pull:
+    if: github.event_name != 'pull_request'
+    needs: image
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Pull and test exact published digest without registry credentials
+        env:
+          IMAGE: ${{ needs.image.outputs.reference }}
+        run: |
+          export DOCKER_CONFIG=$(mktemp -d)
+          docker pull "$IMAGE"
+          bash ci-smoke.sh "$IMAGE"
+          echo "Anonymous pull and SSH/runner checks passed for \`$IMAGE\`" >> "$GITHUB_STEP_SUMMARY"

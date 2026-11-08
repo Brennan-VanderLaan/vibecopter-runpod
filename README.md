@@ -94,6 +94,8 @@ Push to `main` or dispatch **Test and publish RunPod image**. GitHub Actions bui
 `linux/amd64`, tests SSH/key handling, non-root execution, failure/timeout receipts
 and refusal of CPU Vulkan as GPU, then publishes `latest` and `sha-<full commit>`
 to GHCR. Tags `v*` also publish the matching version. PRs test without publishing.
+An independent fresh-runner job pulls the exact published digest without registry
+credentials and repeats the container/SSH tests, catching visibility regressions.
 First publication defaults private on GHCR: change the **container package**
 visibility to Public once, then verify an anonymous pull. Repository visibility
 alone is insufficient. No registry secret is needed: publishing uses the scoped
