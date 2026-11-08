@@ -15,6 +15,9 @@ Windows build, Proton, credentials or NVIDIA kernel driver is baked in.
    Leave the Docker command/entrypoint override empty.
 4. Environment: `PUBLIC_KEY` = your SSH **public** key (RunPod's SSH key injection
    can supply this); `NVIDIA_DRIVER_CAPABILITIES=compute,utility,graphics,video,display`.
+   If the key is absent, the container stays alive for RunPod's authenticated
+   SSH gateway, but its own port 22 server remains disabled. Startup failures
+   also enter a logged recovery mode rather than crash-looping.
    Optionally set `TESTBOX_IMAGE_REFERENCE` to the exact image digest for receipts.
 5. Mount a persistent volume at `/workspace`. Suggested first bring-up box:
    NVIDIA RTX 3060/3090/4090-class GPU with Vulkan graphics support, at least

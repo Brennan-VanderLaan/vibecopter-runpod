@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       'Subsystem sftp internal-sftp' > /etc/ssh/sshd_config
 
 COPY --chmod=755 entrypoint.sh /usr/local/bin/testbox-entrypoint
+RUN ln -s /usr/local/bin/testbox-entrypoint /start.sh
 COPY --chmod=755 run-game /usr/local/bin/run-game
 COPY --chmod=755 probe.py runner.py /opt/vibecopter/
 COPY tests /opt/vibecopter/tests
