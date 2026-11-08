@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail
+if [[ $(id -u) == 0 ]]; then
+    exec runuser -u tester -- /usr/local/bin/run-game "$@"
+fi
+export HOME=/home/tester
+export XDG_RUNTIME_DIR=/tmp/vibecopter-runtime-$(id -u)
+mkdir -p "$XDG_RUNTIME_DIR"
+chmod 700 "$XDG_RUNTIME_DIR"
+exec python3 /opt/vibecopter/runner.py "$@"

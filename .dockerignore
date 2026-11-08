@@ -1,0 +1,9 @@
+**
+!Dockerfile
+!entrypoint.sh
+!run-game
+!probe.py
+!runner.py
+!tests/
+!tests/**
+**/__pycache__
